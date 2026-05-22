@@ -42,7 +42,7 @@ const Login = () => {
                 if (data.success) {
                     setIsLoggedIn(true)
                     await getUserData()
-                    
+
                     // Send OTP automatically and redirect
                     try {
                         await axios.post(backendUrl + '/api/auth/send-verify-otp')
@@ -63,13 +63,13 @@ const Login = () => {
 
                 if (data.success) {
                     setIsLoggedIn(true)
-                    
+
                     // Fetch user data directly to check verification status immediately
                     try {
                         const res = await axios.get(backendUrl + '/api/user/data')
                         if (res.data.success) {
                             const user = res.data.userData
-                            
+
                             // Let context know
                             await getUserData()
 

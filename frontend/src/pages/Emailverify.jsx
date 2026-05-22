@@ -12,35 +12,35 @@ const Emailverify = () => {
 
   const navigate = useNavigate();
 
-  const {backendUrl,isLoggedIn,userData,getUserData} = useContext(AppContext)
+  const { backendUrl, isLoggedIn, userData, getUserData } = useContext(AppContext)
   const [isVerifying, setIsVerifying] = useState(false)
   const [isResending, setIsResending] = useState(false)
 
   const inputRefs = React.useRef([])
 
-  const handleInput = (e,index)=>{
-    if(e.target.value.length > 0 && index <inputRefs.current.length - 1){
+  const handleInput = (e, index) => {
+    if (e.target.value.length > 0 && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus()
     }
   }
 
-  const handleKeyDown = (e,index)=>{
-    if(e.key === 'Backspace' && e.target.value === '' &&  index > 0){
+  const handleKeyDown = (e, index) => {
+    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
       inputRefs.current[index - 1].focus()
     }
   }
 
-  const handlePaste =(e)=>{
+  const handlePaste = (e) => {
     const paste = e.clipboardData.getData('text')
     const pasteArray = paste.split('');
-    pasteArray.forEach((char,index)=>{
-      if(inputRefs.current[index]){
+    pasteArray.forEach((char, index) => {
+      if (inputRefs.current[index]) {
         inputRefs.current[index].value = char
       }
     })
   }
 
-  const onSubmitHandler = async (e)=>{
+  const onSubmitHandler = async (e) => {
     e.preventDefault()
     if (isVerifying) return
 
@@ -49,19 +49,19 @@ const Emailverify = () => {
       const otpArray = inputRefs.current.map(e => e.value)
       const otp = otpArray.join('')
 
-      const {data} = await axios.post(backendUrl + '/api/auth/verify-account', {otp})
-      
-      if(data.success){
-       toast.success(data.message)
-       getUserData()
-       navigate('/')
-       
+      const { data } = await axios.post(backendUrl + '/api/auth/verify-account', { otp })
+
+      if (data.success) {
+        toast.success(data.message)
+        getUserData()
+        navigate('/')
+
       }
-      else{
+      else {
         toast.error(data.message)
       }
-      
-      
+
+
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error verifying email');
     } finally {
@@ -88,10 +88,10 @@ const Emailverify = () => {
 
   useEffect(() => {
     isLoggedIn && userData && userData.isAccountVerified && navigate('/')
-    
-  }, [isLoggedIn,userData])
-  
-  
+
+  }, [isLoggedIn, userData])
+
+
   return (
     <div className='h-screen overflow-hidden bg-[#f7f8f3] font-gilroy text-[#2d2f31]'>
       <div className='grid h-full grid-cols-1 lg:grid-cols-[1.05fr_0.95fr]'>
