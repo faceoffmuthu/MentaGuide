@@ -14,6 +14,7 @@ const Emailverify = () => {
 
   const {backendUrl,isLoggedIn,userData,getUserData} = useContext(AppContext)
   const [isVerifying, setIsVerifying] = useState(false)
+  const [isResending, setIsResending] = useState(false)
 
   const inputRefs = React.useRef([])
 
@@ -68,6 +69,23 @@ const Emailverify = () => {
     }
   }
 
+  const handleResendOtp = async () => {
+    if (isResending) return;
+    setIsResending(true);
+    try {
+      const { data } = await axios.post(backendUrl + '/api/auth/send-verify-otp');
+      if (data.success) {
+        toast.success("Verification OTP sent successfully to your email.");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error resending OTP');
+    } finally {
+      setIsResending(false);
+    }
+  };
+
   useEffect(() => {
     isLoggedIn && userData && userData.isAccountVerified && navigate('/')
     
@@ -117,6 +135,17 @@ const Emailverify = () => {
               {isVerifying ? 'Verifying...' : 'Verify Email'}
               {!isVerifying && <FaArrowRight />}
             </button>
+            <p className='mt-6 text-center text-sm font-semibold text-[#6a6d67]'>
+              Didn't receive the code?{' '}
+              <button
+                type='button'
+                onClick={handleResendOtp}
+                disabled={isResending}
+                className='text-[#8ab83f] underline transition-colors hover:text-[#a4d64f] disabled:cursor-not-allowed disabled:opacity-50'
+              >
+                {isResending ? 'Resending...' : 'Resend OTP'}
+              </button>
+            </p>
           </form>
         </main>
       </div>

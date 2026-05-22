@@ -36,11 +36,11 @@ const HeroSection = () => {
           We take the stress out of export certifications and paperwork, making your factory 100% audit-ready for international buyers.
         </p>
         
-        <div className="flex flex-wrap items-center gap-6 md:gap-10 text-sm md:text-[0.95rem] font-bold text-[#444648]">
+        {/* <div className="flex flex-wrap items-center gap-6 md:gap-10 text-sm md:text-[0.95rem] font-bold text-[#444648]">
           <a href="/login" className="font-gilroy hover:text-[#a4d64f] transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-[#a4d64f] after:origin-bottom-right after:transition-transform hover:after:scale-x-100 hover:after:origin-bottom-left pt-1 pb-1">Login</a>
           <button onClick={handleAdvertiserClick} className="font-gilroy hover:text-[#a4d64f] transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-[#a4d64f] after:origin-bottom-right after:transition-transform hover:after:scale-x-100 hover:after:origin-bottom-left pt-1 pb-1">Advertiser Signup</button>
           <a href="" className="font-gilroy hover:text-[#a4d64f] transition-colors relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-[#a4d64f] after:origin-bottom-right after:transition-transform hover:after:scale-x-100 hover:after:origin-bottom-left pt-1 pb-1">Affiliate Signup</a>
-        </div>
+        </div> */}
 
         {/* CTA buttons */}
         <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-10 items-center mt-8 md:mt-10">

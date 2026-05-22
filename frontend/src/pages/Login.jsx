@@ -42,7 +42,16 @@ const Login = () => {
                 if (data.success) {
                     setIsLoggedIn(true)
                     await getUserData()
-                    navigate('/')
+                    
+                    // Send OTP automatically and redirect
+                    try {
+                        await axios.post(backendUrl + '/api/auth/send-verify-otp')
+                        toast.success("Registration successful! Please verify your email.")
+                    } catch (err) {
+                        // ignore if it fails, user can resend
+                        toast.success("Registration successful!")
+                    }
+                    navigate('/email-verify')
                 }
                 else {
                     toast.error(data.message)
@@ -54,7 +63,30 @@ const Login = () => {
 
                 if (data.success) {
                     setIsLoggedIn(true)
-                    await getUserData()
+                    
+                    // Fetch user data directly to check verification status immediately
+                    try {
+                        const res = await axios.get(backendUrl + '/api/user/data')
+                        if (res.data.success) {
+                            const user = res.data.userData
+                            
+                            // Let context know
+                            await getUserData()
+
+                            if (!user.isAccountVerified) {
+                                // User is not verified, send OTP and redirect
+                                await axios.post(backendUrl + '/api/auth/send-verify-otp')
+                                toast.info("Please verify your email before proceeding.")
+                                navigate('/email-verify')
+                                return
+                            }
+                        }
+                    } catch (err) {
+                        console.error(err)
+                        // fallback to standard get user data
+                        await getUserData()
+                    }
+
                     navigate('/')
                 }
                 else {

@@ -238,8 +238,10 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end w-full mt-auto pt-12 text-black">
             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 text-base md:text-[1rem] lg:text-[1.1rem] font-bold">
               {authControl}
-              <button onClick={handleAdvertiserClick} className="hover:text-[#a4d64f] transition-colors uppercase tracking-widest">Advertiser Signup</button>
-              <a href="#" className="hover:text-[#a4d64f] transition-colors uppercase tracking-widest">Affiliate Signup</a>
+              <button onClick={handleAdvertiserClick} className="hover:text-[#a4d64f] transition-colors uppercase tracking-widest">Advertiser Signup
+
+              </button>
+              {/* <a href="#" className="hover:text-[#a4d64f] transition-colors uppercase tracking-widest">Affiliate Signup</a> */}
             </div>
             <div className="text-[1rem] md:text-[1.1rem] font-bold font-gilroy tracking-wide mt-4 md:mt-0">
               m: hello{'{at}'}vcommission.com
