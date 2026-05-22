@@ -56,24 +56,15 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
   const isDarkText = (activeIndex === 0 || activeIndex >= 4) && activeIndex !== 5;
 
   const navLinks = [
-    { name: 'Home', href: '#' },
+    { name: 'Home', href: '/', onClick: (e) => { e.preventDefault(); setIsOpen(false); navigate('/'); window.scrollTo(0,0); } },
     { name: 'About', href: '#' },
-    { name: 'Affiliates', href: '#' },
-    { name: 'Advertisers', href: '#' },
-    { name: 'Testimonials', href: '#' },
-    { name: 'Humans of VC', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Partners', href: '#' },
-    { name: 'Payments', href: '#' },
-    { name: 'Events', href: '#' },
-    { name: 'FAQ', href: '#' },
-    { name: 'Careers', href: '#' },
-    { name: 'Case Studies', href: '#' },
+    { name: 'Services', href: '#' },
+    { name: 'Contact', href: '#' },
   ];
 
   // Split links into two columns for the layout shown in the screenshot
-  const col1 = navLinks.slice(0, 7);
-  const col2 = navLinks.slice(7);
+  const col1 = navLinks.slice(0, 4);
+  const col2 = navLinks.slice(4);
   const authControlText = isDarkText ? 'text-gray-800 border-gray-500 hover:bg-gray-100' : 'text-white border-white/70 hover:bg-white/10';
   const authControl = userData ? (
     <div className="group relative flex h-8 w-8 items-center justify-center rounded-full bg-black text-white">
@@ -142,7 +133,7 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
           {/* Left Vertical (Countries) */}
           <div className="fixed left-6 md:left-8 lg:left-10 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center z-50 w-0 pointer-events-auto">
             <div className={`-rotate-90 flex items-center gap-3 text-[0.85rem] lg:text-[0.9rem] tracking-widest font-bold font-gilroy uppercase whitespace-nowrap transition-colors duration-300 ${isDarkText ? 'text-black' : 'text-white'}`}>
-              <a href="#" className="hover:text-[#a4d64f] transition-colors">Home</a> <span className="font-light opacity-50">|</span>
+              <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); window.scrollTo(0,0); }} className="hover:text-[#a4d64f] transition-colors">Home</a> <span className="font-light opacity-50">|</span>
               <a href="#" className="hover:text-[#a4d64f] transition-colors">About</a> <span className="font-light opacity-50">|</span>
               <a href="#" className="hover:text-[#a4d64f] transition-colors">Service</a> <span className="font-light opacity-50">|</span>
               <a href="#" className="hover:text-[#a4d64f] transition-colors">Contact</a> <span className="font-light opacity-50">|</span>
@@ -196,7 +187,7 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
               {/* Column 1 */}
               <div className="flex flex-col space-y-3 md:space-y-6">
                 {col1.map((link) => (
-                  <a key={link.name} href={link.href} className="text-[#2b2b2b] text-2xl md:text-4xl lg:text-[2.75rem] font-gilroy font-black tracking-tight hover:text-[#a4d64f] transition-colors leading-none">
+                  <a key={link.name} href={link.href} onClick={link.onClick} className="text-[#2b2b2b] text-2xl md:text-4xl lg:text-[2.75rem] font-gilroy font-black tracking-tight hover:text-[#a4d64f] transition-colors leading-none">
                     {link.name}
                   </a>
                 ))}
@@ -204,7 +195,7 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
               {/* Column 2 */}
               <div className="flex flex-col space-y-3 md:space-y-6">
                 {col2.map((link) => (
-                  <a key={link.name} href={link.href} className="text-[#2b2b2b] text-2xl md:text-4xl lg:text-[2.75rem] font-gilroy font-black tracking-tight hover:text-[#a4d64f] transition-colors leading-none">
+                  <a key={link.name} href={link.href} onClick={link.onClick} className="text-[#2b2b2b] text-2xl md:text-4xl lg:text-[2.75rem] font-gilroy font-black tracking-tight hover:text-[#a4d64f] transition-colors leading-none">
                     {link.name}
                   </a>
                 ))}
@@ -215,11 +206,10 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
           {/* Menu Overlay Sidebars (Inside the white overlay) */}
           <div className="fixed left-6 md:left-8 lg:left-10 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-center z-50 w-0">
             <div className="-rotate-90 flex items-center gap-3 text-[0.85rem] lg:text-[0.9rem] tracking-widest font-bold font-gilroy uppercase whitespace-nowrap text-black">
-              <a href="#" className="hover:text-[#a4d64f] transition-colors">India</a> <span className="font-light opacity-50">|</span>
-              <a href="#" className="hover:text-[#a4d64f] transition-colors">Singapore</a> <span className="font-light opacity-50">|</span>
-              <a href="#" className="hover:text-[#a4d64f] transition-colors">UAE</a> <span className="font-light opacity-50">|</span>
-              <a href="#" className="hover:text-[#a4d64f] transition-colors">UK</a> <span className="font-light opacity-50">|</span>
-              <a href="#" className="hover:text-[#a4d64f] transition-colors">USA</a>
+              <a href="/" onClick={(e) => { e.preventDefault(); setIsOpen(false); navigate('/'); window.scrollTo(0,0); }} className="hover:text-[#a4d64f] transition-colors">Home</a> <span className="font-light opacity-50">|</span>
+              <a href="#" className="hover:text-[#a4d64f] transition-colors">About</a> <span className="font-light opacity-50">|</span>
+              <a href="#" className="hover:text-[#a4d64f] transition-colors">Services</a> <span className="font-light opacity-50">|</span>
+              <a href="#" className="hover:text-[#a4d64f] transition-colors">Contact</a> <span className="font-light opacity-50">|</span>
             </div>
           </div>
 
