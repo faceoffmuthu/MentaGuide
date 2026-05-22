@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import HeroSection from '../components/HeroSection';
 import VisionSection from '../components/VisionSection';
 import VerticalsSection from '../components/VerticalsSection';
@@ -14,6 +15,22 @@ const Homepage = () => {
     const containerRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showHeroLogo, setShowHeroLogo] = useState(true);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [showAdvertiserPopup, setShowAdvertiserPopup] = useState(false);
+    const [showIframeModal, setShowIframeModal] = useState(false);
+
+    useEffect(() => {
+        if (location.state?.showAdvertiserPopup) {
+            setShowAdvertiserPopup(true);
+            navigate('/', { replace: true, state: {} });
+        }
+    }, [location.state, navigate]);
+
+    const handleCloseAll = () => {
+        setShowAdvertiserPopup(false);
+        setShowIframeModal(false);
+    };
 
     const handleScroll = () => {
         if (!containerRef.current) return;
@@ -75,6 +92,64 @@ const Homepage = () => {
                 <div className="w-full h-screen snap-start overflow-hidden relative"><TeamSection /></div>
                 <div className="w-full h-screen snap-start overflow-hidden relative"><ContactSection /></div>
             </div>
+
+            {/* Initial Advertiser Signup Popup */}
+            {showAdvertiserPopup && !showIframeModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 animate-in fade-in zoom-in duration-200">
+                        <button 
+                            onClick={handleCloseAll}
+                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                        
+                        <div className="text-center">
+                            <h2 className="text-2xl font-black text-[#222421] mb-2">Advertiser Signup</h2>
+                            <p className="text-[#6a6d67] mb-6">Complete your advertiser profile to get started.</p>
+                            
+                            <button
+                                onClick={() => setShowIframeModal(true)}
+                                className="w-full py-3.5 bg-[#a4d64f] text-[#202523] font-black uppercase tracking-widest rounded-xl shadow-[0_10px_25px_rgba(164,214,79,0.3)] transition-all hover:-translate-y-1 hover:bg-[#b5e663]"
+                            >
+                                Advertiser Signup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Google Form Iframe Modal */}
+            {showIframeModal && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 sm:p-8">
+                    <div className="relative w-full max-w-4xl h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300">
+                        {/* Modal Header */}
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-gray-100 bg-white">
+                            <div>
+                                <h3 className="text-xl font-black text-[#202523] uppercase tracking-wider">Advertiser Signup</h3>
+                                <p className="text-sm font-semibold text-gray-500 mt-1">Please complete the form below</p>
+                            </div>
+                            <button 
+                                onClick={handleCloseAll} 
+                                className="p-2 rounded-full hover:bg-gray-100 transition-colors group"
+                            >
+                                <svg className="w-6 h-6 text-gray-500 group-hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        {/* Iframe Container */}
+                        <div className="flex-1 w-full bg-[#f8f9fa] relative">
+                            <iframe 
+                                src="https://docs.google.com/forms/d/e/1FAIpQLScXCErL-eTaGJPKUMwKQE61HZM6GOa4lRsY4uvrB-o5Hu-75w/viewform?embedded=true" 
+                                className="absolute inset-0 w-full h-full border-none"
+                                title="Advertiser Signup Form"
+                            >Loading…</iframe>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

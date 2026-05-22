@@ -54,8 +54,7 @@ const Emailverify = () => {
       if (data.success) {
         toast.success(data.message)
         getUserData()
-        navigate('/')
-
+        navigate('/', { state: { showAdvertiserPopup: true } })
       }
       else {
         toast.error(data.message)

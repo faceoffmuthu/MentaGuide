@@ -190,10 +190,15 @@ export const verifyEmail = async (req, res) => {
 // Check if user is Authenticated
 export const isAuthenticated = async (req, res) => {
     try {
-        return res.status(200).json({ success: true, message: "User is authenticated" });
+        const { token } = req.cookies;
+        if (!token) {
+            return res.json({ success: false, message: "Not authenticated" });
+        }
+        
+        jwt.verify(token, process.env.JWT_SECRET);
+        return res.json({ success: true, message: "User is authenticated" });
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
-
+        return res.json({ success: false, message: error.message });
     }
 }
 
