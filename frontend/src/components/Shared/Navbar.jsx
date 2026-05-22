@@ -16,7 +16,7 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
 
   const handleAdvertiserClick = () => {
     if (!userData) {
-      toast.error('To access this form, you must login and verify your email.');
+      toast.error('To access this form, you must login your email.');
     } else if (!userData.isAccountVerified) {
       toast.error('To access this form, you must verify your email.');
     } else {
