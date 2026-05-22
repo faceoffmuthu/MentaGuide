@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/mongodb.js";
 import authRoute from "./routes/authRoutes.js";
 import userRoute from "./routes/userRoutes.js";
+import contactRoute from "./routes/contactRoutes.js";
 import { isAuthenticated } from "./controllers/authController.js";
 
 
@@ -35,6 +36,7 @@ app.get('/', (req, res) => {
 app.get('/api/auth/is-auth', isAuthenticated);
 app.use('/api/auth', authRoute);
 app.use('/api/user', userRoute);
+app.use('/api/contact', contactRoute);
 
 app.listen(PORT, () => {
     console.log(`You goddamn right http://localhost:${PORT}`);

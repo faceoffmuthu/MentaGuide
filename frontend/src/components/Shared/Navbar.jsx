@@ -8,10 +8,21 @@ import { AppContext } from '../../context/AppContext';
 
 const Navbar = ({ activeIndex, showHeroLogo }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdvertiserModalOpen, setIsAdvertiserModalOpen] = useState(false);
   const navigate = useNavigate();
   const { userData, backendUrl, setUserData, setIsLoggedIn } = useContext(AppContext);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const handleAdvertiserClick = () => {
+    if (!userData) {
+      toast.error('To access this form, you must login and verify your email.');
+    } else if (!userData.isAccountVerified) {
+      toast.error('To access this form, you must verify your email.');
+    } else {
+      setIsAdvertiserModalOpen(true);
+    }
+  };
 
   const sendVerificationEmail = async () => {
     try {
@@ -158,7 +169,7 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
               {!userData && (
                 <button onClick={openLogin} className="font-gilroy hover:text-[#a4d64f] transition-colors uppercase tracking-widest cursor-pointer">Login</button>
               )}
-              <a href="#" className="font-gilroy hover:text-[#a4d64f] transition-colors uppercase tracking-widest cursor-pointer">Advertiser Signup</a>
+              <button onClick={handleAdvertiserClick} className="font-gilroy hover:text-[#a4d64f] transition-colors uppercase tracking-widest cursor-pointer">Advertiser Signup</button>
             </div>
             <div className={`text-[1rem] md:text-[1.15rem] font-bold font-gilroy tracking-wide ml-auto transition-colors duration-300 ${isDarkText ? 'text-black' : 'text-white'}`}>
               m: hello{'{at}'}vcommission.com
@@ -227,7 +238,7 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end w-full mt-auto pt-12 text-black">
             <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 text-base md:text-[1rem] lg:text-[1.1rem] font-bold">
               {authControl}
-              <a href="#" className="hover:text-[#a4d64f] transition-colors uppercase tracking-widest">Advertiser Signup</a>
+              <button onClick={handleAdvertiserClick} className="hover:text-[#a4d64f] transition-colors uppercase tracking-widest">Advertiser Signup</button>
               <a href="#" className="hover:text-[#a4d64f] transition-colors uppercase tracking-widest">Affiliate Signup</a>
             </div>
             <div className="text-[1rem] md:text-[1.1rem] font-bold font-gilroy tracking-wide mt-4 md:mt-0">
@@ -236,6 +247,30 @@ const Navbar = ({ activeIndex, showHeroLogo }) => {
           </div>
         </div>
       </div>
+
+      {/* Advertiser Signup Modal */}
+      {isAdvertiserModalOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-4xl h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center justify-between p-4 border-b border-gray-100">
+              <h3 className="font-gilroy font-bold text-xl text-[#2d2f31]">Advertiser Signup</h3>
+              <button 
+                onClick={() => setIsAdvertiserModalOpen(false)}
+                className="text-gray-400 hover:text-red-500 transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              </button>
+            </div>
+            <div className="flex-1 w-full bg-gray-50 relative">
+              <iframe 
+                src="https://docs.google.com/forms/d/e/1FAIpQLScXCErL-eTaGJPKUMwKQE61HZM6GOa4lRsY4uvrB-o5Hu-75w/viewform?embedded=true" 
+                className="w-full h-full border-none"
+                title="Advertiser Signup Form"
+              >Loading…</iframe>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

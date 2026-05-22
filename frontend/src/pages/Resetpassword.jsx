@@ -63,9 +63,23 @@ const Resetpassword = () => {
 
     const onSubmitOtp = async(e)=>{
       e.preventDefault()
+      if (loading) return
+      setLoading(true)
       const otpArray = inputRefs.current.map(e => e.value)
-      setOtp(otpArray.join(''))
-      setIsOtpSubmitted(true)
+      const currentOtp = otpArray.join('')
+      try {
+        const {data} = await axios.post(backendUrl + '/api/auth/verify-reset-otp', {email, otp: currentOtp})
+        if (data.success) {
+            setOtp(currentOtp)
+            setIsOtpSubmitted(true)
+        } else {
+            toast.error(data.message)
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.message || 'Invalid OTP')
+      } finally {
+        setLoading(false)
+      }
     }
 
     const onSubmitNewPassword = async(e)=>{
@@ -156,9 +170,9 @@ const Resetpassword = () => {
                                 ))}
                             </div>
 
-                            <button className='mt-2 flex w-full items-center justify-center gap-3 rounded-2xl bg-[#a4d64f] px-5 py-3.5 text-sm font-black uppercase tracking-[0.18em] text-[#202523] shadow-[0_14px_30px_rgba(164,214,79,0.35)] transition-all hover:-translate-y-0.5 hover:bg-[#b5e663]'>
-                                Submit
-                                <FaArrowRight />
+                            <button disabled={loading} className='mt-2 flex w-full items-center justify-center gap-3 rounded-2xl bg-[#a4d64f] px-5 py-3.5 text-sm font-black uppercase tracking-[0.18em] text-[#202523] shadow-[0_14px_30px_rgba(164,214,79,0.35)] transition-all hover:-translate-y-0.5 hover:bg-[#b5e663] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0'>
+                                {loading ? 'Verifying...' : 'Submit'}
+                                {!loading && <FaArrowRight />}
                             </button>
                         </form>
                         )}
